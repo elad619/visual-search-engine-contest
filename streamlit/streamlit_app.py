@@ -13,7 +13,7 @@ from nli_searcher import searcher
 import streamlit as st
 
 
-features_path = Path(r"./data/features")
+features_path = Path("./data/features")
 # Load the features and the corresponding IDs
 photo_features = np.load(features_path / "features.npy")
 photo_ids = pd.read_csv(features_path / "photo_ids.csv")
@@ -41,7 +41,7 @@ def perform_search(query, input_type):
 
 
 def main():
-    logo = Image.open(".\\data\\logo\\logo-NLI-1.png")
+    logo = Image.open("./data/logo/logo-NLI-1.png")
     st.sidebar.title("Visual Search Engine")
     st.sidebar.image(logo, width=250)
 
