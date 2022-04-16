@@ -3,7 +3,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import torch
-from transformers import CLIPProcessor, CLIPVisionModel
 from CLIP import clip
 
 # Set the paths

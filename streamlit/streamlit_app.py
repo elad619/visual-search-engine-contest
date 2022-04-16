@@ -2,11 +2,9 @@ import os
 import re
 import sys
 from pathlib import Path
-import imageio
 
 import numpy as np
 import pandas as pd
-import torchvision
 from PIL import Image
 sys.path.append(os.getcwd())
 
