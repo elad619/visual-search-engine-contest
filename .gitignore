@@ -132,7 +132,6 @@ dmypy.json
 .vscode
 .DS_Store
 
-
 # Unsplash dataset files
 *.tsv*
 unsplash-dataset/**/*.jpg
