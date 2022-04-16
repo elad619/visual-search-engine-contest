@@ -7,7 +7,7 @@ import torch
 # Set the paths
 from model.clip import clip
 
-features_path = Path("C:\\Users\\elady\\Documents\\NLI\\images\\processed_images\\features")
+features_path = Path(r"./data/features")
 # Load the features and the corresponding IDs
 photo_features = np.load(features_path / "features.npy")
 photo_ids = pd.read_csv(features_path / "photo_ids.csv")
