@@ -30,7 +30,7 @@ def perform_search(query, input_type):
         photo_id = photo_ids[idx]
 
         # Display the photo
-        image = Image.open(f".\\data\\images\\{photo_id}\\{photo_id}.jpg")
+        image = Image.open(f"./data/images/{photo_id}/{photo_id}.jpg")
         photo_search_identifier = re.findall("[0-9]+", photo_id)[0]
         image_url = nli_search_url.format(photo_search_identifier=photo_search_identifier)
         link = f'check ☝️ image on [National Library\'s Website]({image_url})'
