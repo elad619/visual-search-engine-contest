@@ -20,11 +20,11 @@ model, preprocess = clip.load("ViT-B/32", device=device)
 # image_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
 def search_nli(search_query, query_type):
-    if query_type == "text":
+    if query_type == "Text":
         with torch.no_grad():
             input_encoded = model.encode_text(clip.tokenize(search_query).to(device))
 
-    elif query_type == "image":
+    elif query_type == "Image":
         with torch.no_grad():
             # inputs = image_processor(images=search_query, return_tensors="pt")
             # outputs = image_model(**inputs)

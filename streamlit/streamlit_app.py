@@ -16,7 +16,7 @@ from nli_searcher import searcher
 import streamlit as st
 
 
-features_path = Path("C:\\Users\\elady\\Documents\\NLI\\images\\processed_images\\features")
+features_path = Path(r"./data/features")
 # Load the features and the corresponding IDs
 photo_features = np.load(features_path / "features.npy")
 photo_ids = pd.read_csv(features_path / "photo_ids.csv")
@@ -33,10 +33,10 @@ def perform_search(query, input_type):
         photo_id = photo_ids[idx]
 
         # Display the photo
-        image = Image.open(f"C:\\Users\\elady\\Documents\\NLI\\images\\raw_data\\unzipped\\{photo_id}\\{photo_id}.jpg")
+        image = Image.open(f".\\data\\images\\{photo_id}\\{photo_id}.jpg")
         photo_search_identifier = re.findall("[0-9]+", photo_id)[0]
         image_url = nli_search_url.format(photo_search_identifier=photo_search_identifier)
-        link = f'check ☝️ image on [NLI]({image_url})'
+        link = f'check ☝️ image on [National Library\'s Website]({image_url})'
         st.image(image)
         st.markdown(link, unsafe_allow_html=True)
         st.write(" ")
@@ -44,18 +44,20 @@ def perform_search(query, input_type):
 
 
 def main():
-    logo = Image.open("C:\\Users\\elady\\Documents\\NLI\\logo-NLI-1.png")
+    logo = Image.open(".\\data\\logo\\logo-NLI-1.png")
+    st.sidebar.title("Visual Search Engine")
     st.sidebar.image(logo, width=250)
-    st.title("NLI Visual Search Engine")
 
-    input_type = st.sidebar.radio("Query by", ("text", "image"))
-    if input_type == "text":
-        query = st.sidebar.text_input("Enter text search here:")
-    elif input_type == "image":
-        query = st.sidebar.file_uploader("Upload a photo to search", type="jpg")
+    input_type = st.sidebar.radio("Search by", ("Text", "Image"))
+    if input_type == "Text":
+        query = st.sidebar.text_input("Enter Text Search")
+    elif input_type == "Image":
+        query = st.sidebar.file_uploader("Upload a Photo to Search", type="jpg")
     submit = st.sidebar.button("Search")
     if submit:
-        if input_type == "image":
+        st.empty()
+        st.title("National Library Search Results:")
+        if input_type == "Image":
             query = Image.open(query).convert('RGB')
 
         perform_search(query, input_type)
