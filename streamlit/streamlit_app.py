@@ -6,7 +6,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from PIL import Image
-sys.path.append(os.getcwd())
 
 from nli_searcher import searcher
 
