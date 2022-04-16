@@ -3,9 +3,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import torch
-from CLIP import clip
 
 # Set the paths
+from CLIP import clip
+
 features_path = Path("C:\\Users\\elady\\Documents\\NLI\\images\\processed_images\\features")
 # Load the features and the corresponding IDs
 photo_features = np.load(features_path / "features.npy")
