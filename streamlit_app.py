@@ -7,11 +7,10 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
-from nli_searcher import searcher
 
 
 import streamlit as st
-
+from nli_searcher import searcher
 
 features_path = Path("./data/features")
 # Load the features and the corresponding IDs
