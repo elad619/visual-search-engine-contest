@@ -3,6 +3,16 @@ import re
 from urllib.parse import urlsplit, parse_qs
 
 
+def download_image(id: str, collection_type: str):
+    try:
+        docID, ie = get_image_identifiers(id, collection_type)
+        download_and_save_file(
+            f'https://download.nli.org.il/DownloadNliWebServices/download/downloadIE?docId={docID}&ie={ie}&format=ZIP&resolution=MEDIUM&lang=HE',
+            f'{docID}_{ie}.zip')
+    except Exception as e:
+        print(f"Error downloading image {id}: {e}")
+
+
 def get_image_identifiers(id: str, collection_type: str):
     api_url = "https://api.nli.org.il/openlibrary/search"
     params = {"api_key": "CINMvDJAfuHpfdHIMBOuxTEJIEryA9MUs0XGZqmD",
@@ -12,7 +22,7 @@ def get_image_identifiers(id: str, collection_type: str):
               "material_type": collection_type
               }
     response = requests.get(api_url, params=params)
-    response_json = response.json()[-1]
+    response_json = response.json()[0]
     identifier = response_json["http://purl.org/dc/elements/1.1/identifier"][0]['@value']
     download_url = response_json["http://purl.org/dc/elements/1.1/download"][0]['@value']
 
@@ -35,6 +45,7 @@ def download_and_save_file(url, local_filename):
 
 
 if __name__ == "__main__":
-    docID, ie = get_image_identifiers("990023691130205171", "maps")
+    docID, ie = get_image_identifiers("990031597000205171", "manuscript")
     download_and_save_file(
-        f'https://download.nli.org.il/DownloadNliWebServices/download/downloadIE?docId={docID}&ie={ie}&format=ZIP&resolution=MEDIUM&lang=HE', f'{docID}_{ie}.zip')
+        f'https://download.nli.org.il/DownloadNliWebServices/download/downloadIE?docId={docID}&ie={ie}&format=ZIP&resolution=MEDIUM&lang=HE',
+        f'{docID}_{ie}.zip')

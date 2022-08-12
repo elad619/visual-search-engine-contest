@@ -14,7 +14,7 @@ photo_ids = pd.read_csv(features_path / "photo_ids.csv")
 photo_ids = list(photo_ids['photo_id'])
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model, preprocess = clip.load("ViT-B/32", device=device)
+model, preprocess = clip.load("ViT-B/16", device=device)
 
 # image_model = CLIPVisionModel.from_pretrained("openai/clip-vit-base-patch32")
 # image_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
