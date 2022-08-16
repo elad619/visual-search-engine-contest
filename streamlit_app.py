@@ -8,7 +8,8 @@ import pandas as pd
 from PIL import Image
 
 import os
-os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 import streamlit as st
 from nli_searcher import searcher
@@ -18,7 +19,7 @@ features_path = Path("./data/features")
 photo_features = np.load(features_path / "features.npy")
 photo_ids = pd.read_csv(features_path / "photo_ids.csv")
 photo_ids = list(photo_ids['photo_id'])
-nli_search_url = "https://merhav.nli.org.il/primo-explore/search?query=any,contains,{photo_search_identifier}&sortby=rank&vid=NLI&lang=iw_IL"
+nli_search_url = "https://www.nli.org.il/he/search?projectName=NLI#&q=any,contains,{photo_search_identifier}&bulkSize=30&index=0&sort=rank&t=allresults"
 
 
 def perform_search(query, input_type):
@@ -31,8 +32,11 @@ def perform_search(query, input_type):
 
         # Display the photo
         image = Image.open(f"./data/images/{photo_id}.jpg")
-        photo_search_identifier = re.findall("[0-9]+", photo_id)[0]
-        image_url = nli_search_url.format(photo_search_identifier=photo_search_identifier)
+        photo_search_identifiers = photo_id.split('-')[0]
+        image_docID_seperated = photo_search_identifiers.split('_')[:-1]
+        image_docID = '_'.join(image_docID_seperated)
+
+        image_url = nli_search_url.format(photo_search_identifier=image_docID)
         link = f'check ☝️ image on [National Library\'s Website]({image_url})'
         st.image(image)
         st.markdown(link, unsafe_allow_html=True)

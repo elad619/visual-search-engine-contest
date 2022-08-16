@@ -30,6 +30,20 @@ def get_image_identifiers(id: str, collection_type: str):
     return identifier, ie
 
 
+def get_image_record_id(id: str, collection_type: str):
+    api_url = "https://api.nli.org.il/openlibrary/search"
+    params = {"api_key": "CINMvDJAfuHpfdHIMBOuxTEJIEryA9MUs0XGZqmD",
+              "query": "any,contains,{}".format(id),
+              "output_format": "json",
+              "sortField": "title",
+              "material_type": collection_type
+              }
+    response = requests.get(api_url, params=params)
+    response_json = response.json()[0]
+    record_id = response_json["http://purl.org/dc/elements/1.1/recordid"][0]['@value']
+    return record_id
+
+
 def parse_identifiers_from_download_url(download_url):
     download_query = urlsplit(download_url).query
     params = parse_qs(download_query)
