@@ -14,7 +14,6 @@ def search_main():
     # logo = Image.open("data/logo/logo-NLI-1.png")
     # st.image(logo, width=100)
     draw_logo()
-    st.header("Search National Library visual items")
 
     input_type = st.sidebar.radio("Search by", ("Text", "Image"))
     if input_type == "Text":
