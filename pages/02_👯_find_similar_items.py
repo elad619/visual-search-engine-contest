@@ -1,11 +1,9 @@
-import os
-
 import pandas as pd
 from PIL import Image
 import streamlit as st
 
-from streamlit_app.streamlit_utils.draw_logo import draw_logo
-from streamlit_app.streamlit_utils.streamlit_search import perform_search
+from streamlit_utils.draw_logo import draw_logo
+from streamlit_utils.streamlit_search import perform_search
 
 
 def similar_items_main(images_metadata):
