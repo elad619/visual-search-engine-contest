@@ -3,12 +3,10 @@ import os
 from PIL import Image
 import streamlit as st
 
-from streamlit_app.streamlit_utils.draw_logo import draw_logo
-from streamlit_app.streamlit_utils.streamlit_search import perform_search
+from streamlit_utils.draw_logo import draw_logo
+from streamlit_utils.streamlit_search import perform_search
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-
-import streamlit as st
 
 def search_main():
     # logo = Image.open("data/logo/logo-NLI-1.png")

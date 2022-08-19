@@ -28,7 +28,7 @@ def similar_items_main(images_metadata):
         st.image(image_to_search, width=500)
         st.write(" ")
 
-        st.header("NLI similar images:")
+        st.header("Similar NLI images:")
         perform_search(image_to_search, "Image", is_closest_item_search=True)
     else:
         st.write("")
