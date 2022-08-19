@@ -28,4 +28,4 @@ if __name__ == "__main__":
 
     organized_images_db = pd.concat([new_images_db, original_images_db])
     organized_images_db = organized_images_db.drop(columns=['id'])
-    organized_images_db.to_csv("organized_images_db.csv", index=False)
+    organized_images_db.to_csv("images_metadata.csv", index=False)
