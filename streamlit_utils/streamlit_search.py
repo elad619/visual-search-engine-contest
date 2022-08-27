@@ -9,7 +9,7 @@ from nli_searcher import searcher
 features_path = Path("data/features")
 photo_ids = pd.read_csv(features_path / "photo_ids.csv")
 photo_ids = list(photo_ids['photo_id'])
-nli_search_url = "https://www.nli.org.il/he/search?projectName=NLI#&q=any,contains,{photo_search_identifier}&bulkSize=30&index=0&sort=rank&t=allresults"
+nli_search_url = "https://merhav.nli.org.il/primo-explore/search?query=any,contains,{photo_search_identifier}&sortby=rank&vid=NLI&lang=iw_IL"
 
 
 def perform_search(query, input_type, is_closest_item_search=False):
