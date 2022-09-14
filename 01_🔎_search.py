@@ -8,6 +8,7 @@ from streamlit_utils.streamlit_search import perform_search
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
+
 def search_main():
     # logo = Image.open("data/logo/logo-NLI-1.png")
     # st.image(logo, width=100)
@@ -28,6 +29,13 @@ def search_main():
         perform_search(query, input_type)
     else:
         st.write("")
+
+    st.sidebar.markdown("***")
+    st.sidebar.write("##")
+    st.sidebar.write("##")
+
+
+    st.sidebar.button("Have some fun with NLI images 🎨")
 
 
 if __name__ == "__main__":
