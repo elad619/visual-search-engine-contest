@@ -1,4 +1,5 @@
 import os
+import time
 
 import replicate
 import streamlit as st
@@ -9,6 +10,8 @@ os.environ["REPLICATE_API_TOKEN"] = st.secrets["REPLICATE_API_TOKEN"]
 model = replicate.models.get("stability-ai/stable-diffusion")
 images_metadata = pd.read_csv("data/images/metadata/images_metadata.csv")
 
+def back_button():
+    st.session_state.button = False
 
 def create_image(original_image_file, prompt, prompt_strength, guidance_scale):
     new_image = model.predict(prompt=prompt,
@@ -57,9 +60,7 @@ def have_fun_with_nli_images():
             create_image(original_image_file, prompt, prompt_strength, guidance_scale)
 
     st.sidebar.markdown("***")
-    end_button = st.sidebar.button("Finish Editing 🔙")
-    if end_button:
-        st.session_state.button = False
+    end_button = st.sidebar.button("Back to search engine 🔙", on_click=back_button)
 
 
 if __name__ == "__main__":
