@@ -30,3 +30,4 @@ fastparquet==0.5.0
 pyarrow==2.0.0
 imageio
 requests
+replicate
