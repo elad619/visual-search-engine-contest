@@ -33,6 +33,11 @@ def have_fun_with_nli_images():
                                                    "image_identifier"].values[0]
 
     image_file_name = f"{image_identifier_to_edit}-{image_number_in_item - 1}"
+
+    if "." in image_file_name:
+        image_file_name = image_file_name.split(".")[0]
+
+
     original_image_file = open(f"data/images/{image_file_name}.jpg", "rb")
 
     prompt = st.sidebar.text_input("Enter a prompt")
