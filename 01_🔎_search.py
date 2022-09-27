@@ -35,7 +35,7 @@ def search_main():
         submit = st.button("Search")
 
         st.markdown("***")
-        create_images_button = st.button("Have some fun with NLI images 🎨", on_click=button_clicked)
+        create_images_button = st.button("get creative with NLI images 🎨", on_click=button_clicked)
 
     if submit:
         st.empty()

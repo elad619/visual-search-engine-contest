@@ -32,14 +32,15 @@ def similar_items_main(images_metadata):
         submit = st.button("Search")
 
         st.markdown("***")
-        create_images_button = st.button("Have some fun with NLI images 🎨", on_click=button_clicked)
+        create_images_button = st.button("get creative with NLI images 🎨", on_click=button_clicked)
+
+    image_to_search = Image.open(f"data/images/{image_file_name}.jpg").convert('RGB')
+    st.empty()
+    st.header("You chose to search the following NLI image:")
+    st.image(image_to_search, width=500)
+    st.write(" ")
 
     if submit:
-        image_to_search = Image.open(f"data/images/{image_file_name}.jpg").convert('RGB')
-        st.empty()
-        st.header("You chose to search the following NLI image:")
-        st.image(image_to_search, width=500)
-        st.write(" ")
 
         st.header("Similar NLI images:")
         perform_search(image_to_search, "Image", is_closest_item_search=True)
