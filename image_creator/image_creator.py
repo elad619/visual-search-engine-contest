@@ -10,19 +10,25 @@ os.environ["REPLICATE_API_TOKEN"] = st.secrets["REPLICATE_API_TOKEN"]
 model = replicate.models.get("stability-ai/stable-diffusion")
 images_metadata = pd.read_csv("data/images/metadata/images_metadata.csv")
 
+
 def back_button():
     st.session_state.button = False
 
+
 def create_image(original_image_file, prompt, prompt_strength, guidance_scale):
-    new_image = model.predict(prompt=prompt,
-                              width=512,
-                              height=512,
-                              num_inference_steps=100,
-                              init_image=original_image_file,
-                              prompt_strength=prompt_strength,
-                              guidance_scale=guidance_scale)
-    st.title("New image")
-    st.image(new_image, width=512)
+    new_images = model.predict(prompt=prompt,
+                               width=512,
+                               height=512,
+                               num_inference_steps=70,
+                               init_image=original_image_file,
+                               prompt_strength=prompt_strength,
+                               guidance_scale=guidance_scale,
+                               num_outputs=4)
+    st.title("New images")
+    cols = st.columns(2)
+
+    for i, image in enumerate(new_images):
+        cols[i % 2].image(image, width=256)
 
 
 def have_fun_with_nli_images():
@@ -39,7 +45,6 @@ def have_fun_with_nli_images():
 
     if "." in image_file_name:
         image_file_name = image_file_name.split(".")[0]
-
 
     original_image_file = open(f"data/images/{image_file_name}.jpg", "rb")
 
@@ -61,6 +66,7 @@ def have_fun_with_nli_images():
 
     st.sidebar.markdown("***")
     end_button = st.sidebar.button("Back to search engine 🔙", on_click=back_button)
+    st.sidebar.markdown("###")
 
 
 if __name__ == "__main__":

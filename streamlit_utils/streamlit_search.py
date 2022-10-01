@@ -15,7 +15,7 @@ nli_search_url = "https://merhav.nli.org.il/primo-explore/search?query=any,conta
 def perform_search(query, input_type, is_closest_item_search=False):
     best_photos = searcher.search_nli(query, input_type)
     # Iterate over the top 3 results
-    search_range = range(1, 4) if is_closest_item_search else range(3)
+    search_range = range(1, 6) if is_closest_item_search else range(3)
     for i in search_range:
         # Retrieve the photo ID
         idx = best_photos[i][1]

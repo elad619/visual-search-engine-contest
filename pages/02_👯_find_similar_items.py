@@ -16,6 +16,11 @@ def button_clicked():
 
 def similar_items_main(images_metadata):
     search_placeholder = st.sidebar.empty()
+    if st.session_state.button:
+        search_placeholder.empty()
+        st.empty()
+        have_fun_with_nli_images()
+        return
 
     with search_placeholder.container():
         record_id_to_search = st.selectbox(
@@ -27,13 +32,12 @@ def similar_items_main(images_metadata):
         image_identifier_to_search = images_metadata.loc[images_metadata["record_id"] == record_id_to_search,
                                                          "image_identifier"].values[0]
 
-        image_file_name = f"{image_identifier_to_search}-{image_number_in_item - 1}"
-
         submit = st.button("Search")
 
         st.markdown("***")
         create_images_button = st.button("get creative with NLI images 🎨", on_click=button_clicked)
 
+    image_file_name = f"{image_identifier_to_search}-{int(image_number_in_item) - 1}"
     image_to_search = Image.open(f"data/images/{image_file_name}.jpg").convert('RGB')
     st.empty()
     st.header("You chose to search the following NLI image:")
@@ -49,6 +53,7 @@ def similar_items_main(images_metadata):
 
     if create_images_button or st.session_state.button:
         search_placeholder.empty()
+        st.empty()
         have_fun_with_nli_images()
 
 
