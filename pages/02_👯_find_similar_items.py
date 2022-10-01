@@ -27,7 +27,7 @@ def similar_items_main(images_metadata):
             'Choose NLI item record id:',
             reversed(images_metadata["record_id"].to_list()), key="1")
         item_size = images_metadata.loc[images_metadata["record_id"] == record_id_to_search, "size"].values[0]
-        image_number_in_item = st.number_input('image number in item', value=1, max_value=item_size)
+        image_number_in_item = st.number_input('image number in item', value=1, max_value=item_size, min_value=1)
 
         image_identifier_to_search = images_metadata.loc[images_metadata["record_id"] == record_id_to_search,
                                                          "image_identifier"].values[0]

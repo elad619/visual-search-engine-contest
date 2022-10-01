@@ -36,8 +36,8 @@ def have_fun_with_nli_images():
         'Choose NLI item record id:',
         reversed(images_metadata["record_id"].to_list()), key="2")
     item_size = images_metadata.loc[images_metadata["record_id"] == record_id_to_search, "size"].values[0]
-    image_number_in_item = st.sidebar.number_input('image number in item', value=1, max_value=item_size, key="3")
-
+    image_number_in_item = st.sidebar.number_input('image number in item', value=1, max_value=item_size, key="3",
+                                                   min_value=1)
     image_identifier_to_edit = images_metadata.loc[images_metadata["record_id"] == record_id_to_search,
                                                    "image_identifier"].values[0]
 
