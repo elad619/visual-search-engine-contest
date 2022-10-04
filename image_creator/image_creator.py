@@ -17,7 +17,7 @@ def back_button():
 
 def create_image(original_image_file, prompt, prompt_strength, guidance_scale):
     new_images = model.predict(prompt=prompt,
-                               width=512,
+                               width=768,
                                height=512,
                                num_inference_steps=70,
                                init_image=original_image_file,
