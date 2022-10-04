@@ -9,9 +9,24 @@ from streamlit_utils.streamlit_search import perform_search
 if 'button' not in st.session_state:
     st.session_state.button = False
 
+if "counter" not in st.session_state:
+    st.session_state.counter = 1
+
+if "similar_items_print_blocker" not in st.session_state:
+    st.session_state.similar_items_print_blocker = False
+
 
 def button_clicked():
+    st.session_state.similar_items_print_blocker = False
     st.session_state.button = True
+
+
+def print_searched_image(image_file_name):
+    image_to_search = Image.open(f"data/images/{image_file_name}.jpg").convert('RGB')
+    st.empty()
+    st.header("You chose to search the following NLI image:")
+    st.image(image_to_search, width=500)
+    st.write(" ")
 
 
 def similar_items_main(images_metadata):
@@ -23,6 +38,7 @@ def similar_items_main(images_metadata):
         return
 
     with search_placeholder.container():
+
         record_id_to_search = st.selectbox(
             'Choose NLI item record id:',
             reversed(images_metadata["record_id"].to_list()), key="1")
@@ -38,15 +54,15 @@ def similar_items_main(images_metadata):
         create_images_button = st.button("get creative with NLI images 🎨", on_click=button_clicked)
 
     image_file_name = f"{image_identifier_to_search}-{int(image_number_in_item) - 1}"
-    image_to_search = Image.open(f"data/images/{image_file_name}.jpg").convert('RGB')
-    st.empty()
-    st.header("You chose to search the following NLI image:")
-    st.image(image_to_search, width=500)
-    st.write(" ")
+    if not st.session_state.similar_items_print_blocker:
+        print_searched_image(image_file_name)
 
     if submit:
-
+        if st.session_state.similar_items_print_blocker:
+            st.session_state.similar_items_print_blocker = True
+            print_searched_image(image_file_name)
         st.header("Similar NLI images:")
+        image_to_search = Image.open(f"data/images/{image_file_name}.jpg").convert('RGB')
         perform_search(image_to_search, "Image", is_closest_item_search=True)
     else:
         st.write("")

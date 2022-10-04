@@ -13,8 +13,14 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 if 'button' not in st.session_state:
     st.session_state.button = False
 
+if "counter" not in st.session_state:
+    st.session_state.counter = 1
+
+if "similar_items_print_blocker" not in st.session_state:
+    st.session_state.similar_items_print_blocker = False
 
 def button_clicked():
+    st.session_state.similar_items_print_blocker = True
     st.session_state.button = True
 
 
@@ -24,6 +30,7 @@ def search_main():
     draw_logo()
 
     search_placeholder = st.sidebar.empty()
+    st.session_state.similar_items_print_blocker = False
 
     with search_placeholder.container():
         input_type = st.radio("Search by", ("Text", "Image"))
