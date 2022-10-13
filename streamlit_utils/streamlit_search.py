@@ -4,7 +4,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 from PIL import Image
-import webbrowser
+from bokeh.models.widgets import Div
 
 from nli_searcher import searcher
 
@@ -26,6 +26,13 @@ def scroll_to_page_top():
         height=0
     )
     st.session_state.counter += 1
+
+
+def nav_to(url):
+    js = f"window.open('{url}')"  # New tab or window
+    html = '<img src onerror="{}">'.format(js)
+    div = Div(text=html)
+    st.bokeh_chart(div)
 
 
 def find_similar(image_to_search):
@@ -62,7 +69,7 @@ def perform_search(query, input_type, is_closest_item_search=False):
                                                 kwargs=dict(image_to_search=image),
                                                 key=(str(i) + str(is_closest_item_search)))
 
-        columns[1].button('more info ℹ️', on_click=webbrowser.open, kwargs=dict(url=image_nli_url),
+        columns[1].button('more info ℹ️', on_click=nav_to, kwargs=dict(url=image_nli_url),
                           key=(str(i) + str(is_closest_item_search) + "info"))
         st.write(" ")
         st.write(" ")
