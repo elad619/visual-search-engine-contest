@@ -8,6 +8,8 @@ from PIL import Image
 
 os.environ["REPLICATE_API_TOKEN"] = st.secrets["REPLICATE_API_TOKEN"]
 model = replicate.models.get("stability-ai/stable-diffusion")
+model = model.versions.get("a826166bdfbd1c12981a2e914120aa8c19ab2b5474ff8c70f4e2923e6d6596cc")
+
 images_metadata = pd.read_csv("data/images/metadata/images_metadata.csv")
 
 
@@ -32,6 +34,9 @@ def create_image(original_image_file, prompt, prompt_strength, guidance_scale):
 
 
 def have_fun_with_nli_images():
+    end_button = st.sidebar.button("Back to search engine 🔙", on_click=back_button)
+    st.sidebar.markdown("###")
+
     record_id_to_search = st.sidebar.selectbox(
         'Choose NLI item record id:',
         reversed(images_metadata["record_id"].to_list()), key="2")
@@ -48,7 +53,7 @@ def have_fun_with_nli_images():
 
     original_image_file = open(f"data/images/{image_file_name}.jpg", "rb")
 
-    prompt = st.sidebar.text_input("Enter a prompt")
+    prompt = st.sidebar.text_input("Enter a text prompt")
 
     prompt_strength = st.sidebar.slider("How much to change the image", min_value=0.0, max_value=1.0,
                                         value=0.5)
@@ -59,14 +64,12 @@ def have_fun_with_nli_images():
     st.title("Original image")
     st.image(image_to_edit_for_display, width=512)
 
-    button = st.sidebar.button("Create new image 🎨")
+    button = st.sidebar.button("Edit NLI image 🎨")
     if button:
         with st.spinner('Wait for it...'):
             create_image(original_image_file, prompt, prompt_strength, guidance_scale)
 
     st.sidebar.markdown("***")
-    end_button = st.sidebar.button("Back to search engine 🔙", on_click=back_button)
-    st.sidebar.markdown("###")
 
 
 if __name__ == "__main__":
