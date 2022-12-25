@@ -3,8 +3,6 @@ import os
 from PIL import Image
 import streamlit as st
 
-from image_creator.image_creator import have_fun_with_nli_images
-from streamlit_utils.draw_logo import draw_logo
 from streamlit_utils.streamlit_search import perform_search
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
@@ -26,7 +24,9 @@ def button_clicked():
 def search_main():
     # logo = Image.open("data/logo/logo-NLI-1.png")
     # st.image(logo, width=100)
-    draw_logo()
+    # draw_logo()
+
+    st.sidebar.title("Yad Vashem - AI Image Search")
 
     search_placeholder = st.sidebar.empty()
     st.session_state.similar_items_print_blocker = False
@@ -40,8 +40,6 @@ def search_main():
 
         submit = st.button("Search")
 
-        st.markdown("***")
-        create_images_button = st.button("get creative with NLI images 🎨", on_click=button_clicked)
 
     if submit:
         st.empty()
@@ -53,9 +51,6 @@ def search_main():
     else:
         st.write("")
 
-    if create_images_button or st.session_state.button:
-        search_placeholder.empty()
-        have_fun_with_nli_images()
 
 
 if __name__ == "__main__":

@@ -14,6 +14,7 @@ photo_ids = list(photo_ids['photo_id'])
 nli_search_url = "https://merhav.nli.org.il/primo-explore/search?query=any,contains,{photo_search_identifier}&sortby=rank&vid=NLI&lang=iw_IL"
 
 
+images_metadata = pd.read_csv("data/metadata/metadata.csv")
 
 def scroll_to_page_top():
     components.html(
@@ -39,17 +40,20 @@ def find_similar(image_to_search):
     st.session_state.similar_items_print_blocker = True
     scroll_to_page_top()
     st.empty()
-    st.header("You chose to search the following NLI image:")
+    st.header("You chose to search the following Yad Vashem image:")
     st.image(image_to_search, width=500)
     st.write(" ")
-    st.header("Similar NLI images:")
+    st.header("Similar Yad Vashem images:")
     perform_search(image_to_search, "Image", is_closest_item_search=True)
+
+
+MATCHING_IMAGES_NUMBER_TO_PRESENT = 15
 
 
 def perform_search(query, input_type, is_closest_item_search=False):
     best_photos = searcher.search_nli(query, input_type)
     # Iterate over the top 3 results
-    search_range = range(1, 6) if is_closest_item_search else range(3)
+    search_range = range(MATCHING_IMAGES_NUMBER_TO_PRESENT)
     for i in search_range:
         # Retrieve the photo ID
         idx = best_photos[i][1]
@@ -57,11 +61,11 @@ def perform_search(query, input_type, is_closest_item_search=False):
 
         # Display the photo
         image = Image.open(f"./data/images/{photo_id}.jpg")
-        photo_search_identifiers = photo_id.split('-')[0]
-        image_docID_seperated = photo_search_identifiers.split('_')[:-1]
-        image_docID = '_'.join(image_docID_seperated)
-
-        image_nli_url = nli_search_url.format(photo_search_identifier=image_docID)
+        # photo_search_identifiers = photo_id.split('-')[0]
+        # image_docID_seperated = photo_search_identifiers.split('_')[:-1]
+        # image_docID = '_'.join(image_docID_seperated)
+        #
+        # image_nli_url = nli_search_url.format(photo_search_identifier=image_docID)
         st.image(image, width=500)
         columns = st.columns(2)
 
@@ -69,7 +73,12 @@ def perform_search(query, input_type, is_closest_item_search=False):
                                                 kwargs=dict(image_to_search=image),
                                                 key=(str(i) + str(is_closest_item_search)))
 
-        columns[1].button('more info ℹ️', on_click=nav_to, kwargs=dict(url=image_nli_url),
-                          key=(str(i) + str(is_closest_item_search) + "info"))
-        st.write(" ")
-        st.write(" ")
+        # columns[1].button('more info ℹ️', on_click=nav_to, kwargs=dict(url=image_nli_url),
+        #                   key=(str(i) + str(is_closest_item_search) + "info"))
+
+        if photo_id in images_metadata['filename'].values:
+            image_description = images_metadata[images_metadata['filename'] == photo_id]['title'].values[0]
+            image_category = images_metadata[images_metadata['filename'] == photo_id]['category'].values[0]
+            st.write(f"description☝️ : {image_description}")
+            st.write(f"category☝️ : {image_category}")
+        st.markdown("---")
