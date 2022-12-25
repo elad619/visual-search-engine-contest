@@ -7,6 +7,7 @@ from PIL import Image
 from bokeh.models.widgets import Div
 
 from nli_searcher import searcher
+from utils.s3_reader.s3_reader import read_image_from_s3
 
 features_path = Path("data/features")
 photo_ids = pd.read_csv(features_path / "photo_ids.csv")
@@ -47,20 +48,20 @@ def find_similar(image_to_search):
     perform_search(image_to_search, "Image", is_closest_item_search=True)
 
 
-MATCHING_IMAGES_NUMBER_TO_PRESENT = 15
 
 
-def perform_search(query, input_type, is_closest_item_search=False):
+
+def perform_search(query, input_type,matching_images_number_to_present = 20, is_closest_item_search=False):
     best_photos = searcher.search_nli(query, input_type)
     # Iterate over the top 3 results
-    search_range = range(MATCHING_IMAGES_NUMBER_TO_PRESENT)
+    search_range = range(matching_images_number_to_present)
     for i in search_range:
         # Retrieve the photo ID
         idx = best_photos[i][1]
         photo_id = photo_ids[idx]
 
         # Display the photo
-        image = Image.open(f"./data/images/{photo_id}.jpg")
+        image = read_image_from_s3(photo_id)
         # photo_search_identifiers = photo_id.split('-')[0]
         # image_docID_seperated = photo_search_identifiers.split('_')[:-1]
         # image_docID = '_'.join(image_docID_seperated)

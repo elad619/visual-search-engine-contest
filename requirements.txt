@@ -32,3 +32,4 @@ imageio
 requests
 replicate
 bokeh==2.4.3
+boto3

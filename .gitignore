@@ -144,3 +144,4 @@ unsplash-dataset/**/*.npy
 # Serverless
 .serverless
 node_modules
+/data/images/
