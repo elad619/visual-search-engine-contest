@@ -27,7 +27,6 @@ regex==2020.11.13
 tqdm==4.56.0
 pandas==1.2.0
 fastparquet==0.5.0
-pyarrow==2.0.0
 bokeh==2.4.3
 s3fs
 streamlit==1.17.0
