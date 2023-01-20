@@ -44,14 +44,50 @@ def find_similar(image_to_search):
     st.image(image_to_search, width=500)
     st.write(" ")
     st.header("Similar Yad Vashem images:")
-    perform_search(image_to_search, "Image", is_closest_item_search=True)
+    perform_normal_search(image_to_search, "Image", is_closest_item_search=True)
 
 
 
 
 
-def perform_search(query, input_type,matching_images_number_to_present = 20, is_closest_item_search=False):
-    best_photos = searcher.search_nli(query, input_type)
+def perform_search(text_query, image_query, image_weight=0.5,matching_images_number_to_present = 20, is_closest_item_search=False):
+    best_photos = searcher.search_by_text_and_photo(text_query, image_query, image_weight)
+    # Iterate over the top 3 results
+    search_range = range(matching_images_number_to_present)
+    for i in search_range:
+        # Retrieve the photo ID
+        idx = best_photos[i][1]
+        photo_id = photo_ids[idx]
+
+        # Display the photo
+        image = read_image_from_s3(photo_id)
+        # photo_search_identifiers = photo_id.split('-')[0]
+        # image_docID_seperated = photo_search_identifiers.split('_')[:-1]
+        # image_docID = '_'.join(image_docID_seperated)
+        #
+        # image_nli_url = nli_search_url.format(photo_search_identifier=image_docID)
+        st.image(image, width=500)
+        columns = st.columns(2)
+
+        find_similar_button = columns[0].button("find similar images 🖼️☝️ ", on_click=find_similar,
+                                                kwargs=dict(image_to_search=image),
+                                                key=(str(i) + str(is_closest_item_search)))
+
+        # columns[1].button('more info ℹ️', on_click=nav_to, kwargs=dict(url=image_nli_url),
+        #                   key=(str(i) + str(is_closest_item_search) + "info"))
+
+        if photo_id in images_metadata['filename'].values:
+            image_description = images_metadata[images_metadata['filename'] == photo_id]['title'].values[0]
+            image_category = images_metadata[images_metadata['filename'] == photo_id]['category'].values[0]
+            st.write(f"description☝️ : {image_description}")
+            st.write(f"category☝️ : {image_category}")
+        st.markdown("---")
+
+
+
+
+def perform_normal_search(query, input_type,matching_images_number_to_present = 20, is_closest_item_search=False):
+    best_photos = searcher.search_image_or_text(query, input_type)
     # Iterate over the top 3 results
     search_range = range(matching_images_number_to_present)
     for i in search_range:
