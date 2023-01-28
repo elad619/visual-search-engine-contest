@@ -6,6 +6,7 @@ import pandas as pd
 from bokeh.models.widgets import Div
 
 from nli_searcher import searcher
+from utils.met_reader.met_reader import read_image_from_local
 from utils.s3_reader.s3_reader import read_image_from_s3
 
 features_path = Path("data/features")
@@ -13,8 +14,8 @@ photo_ids = pd.read_csv(features_path / "photo_ids.csv")
 photo_ids = list(photo_ids['photo_id'])
 nli_search_url = "https://merhav.nli.org.il/primo-explore/search?query=any,contains,{photo_search_identifier}&sortby=rank&vid=NLI&lang=iw_IL"
 
-
 images_metadata = pd.read_csv("data/metadata/metadata.csv")
+
 
 def scroll_to_page_top():
     components.html(
@@ -40,17 +41,15 @@ def find_similar(image_to_search):
     st.session_state.similar_items_print_blocker = True
     scroll_to_page_top()
     st.empty()
-    st.header("You chose to search the following Yad Vashem image:")
+    st.header("You chose to search the following Met image:")
     st.image(image_to_search, width=500)
     st.write(" ")
-    st.header("Similar Yad Vashem images:")
+    st.header("Similar Met images:")
     perform_normal_search(image_to_search, "Image", is_closest_item_search=True)
 
 
-
-
-
-def perform_search(text_query, image_query, image_weight=0.5,matching_images_number_to_present = 20, is_closest_item_search=False):
+def perform_combined_search(text_query, image_query, image_weight=0.5, matching_images_number_to_present=20,
+                            is_closest_item_search=False):
     best_photos = searcher.search_by_text_and_photo(text_query, image_query, image_weight)
     # Iterate over the top 3 results
     search_range = range(matching_images_number_to_present)
@@ -60,7 +59,7 @@ def perform_search(text_query, image_query, image_weight=0.5,matching_images_num
         photo_id = photo_ids[idx]
 
         # Display the photo
-        image = read_image_from_s3(photo_id)
+        image = read_image_from_local(photo_id)
         # photo_search_identifiers = photo_id.split('-')[0]
         # image_docID_seperated = photo_search_identifiers.split('_')[:-1]
         # image_docID = '_'.join(image_docID_seperated)
@@ -84,9 +83,7 @@ def perform_search(text_query, image_query, image_weight=0.5,matching_images_num
         st.markdown("---")
 
 
-
-
-def perform_normal_search(query, input_type,matching_images_number_to_present = 20, is_closest_item_search=False):
+def perform_normal_search(query, input_type, matching_images_number_to_present=20, is_closest_item_search=False):
     best_photos = searcher.search_image_or_text(query, input_type)
     # Iterate over the top 3 results
     search_range = range(matching_images_number_to_present)
@@ -96,7 +93,7 @@ def perform_normal_search(query, input_type,matching_images_number_to_present = 
         photo_id = photo_ids[idx]
 
         # Display the photo
-        image = read_image_from_s3(photo_id)
+        image = read_image_from_local(photo_id)
         # photo_search_identifiers = photo_id.split('-')[0]
         # image_docID_seperated = photo_search_identifiers.split('_')[:-1]
         # image_docID = '_'.join(image_docID_seperated)
