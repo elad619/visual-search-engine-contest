@@ -33,9 +33,19 @@ def search_main():
     st.session_state.similar_items_print_blocker = False
 
     with search_placeholder.container():
-        text_query = st.text_input("Enter Text Search")
-        image_weight = st.number_input("Image Weight", min_value=0.0, max_value=1.0, value=0.5)
-        image_query = st.file_uploader("Upload a Photo to Search", type=["jpg", "png"])
+        first_query_type = st.radio("Query 1 Type", ('Image', 'Text'))
+        first_query_weight = st.number_input("Query 1 Weight", min_value=-1.0, max_value=1.0, value=0.5)
+        if first_query_type == "Image":
+            first_query = st.file_uploader("Upload a Photo to Search", type=["jpg", "png"], key="first_query")
+        else:
+            first_query = st.text_input("Enter Text Search")
+
+        second_query_type = st.radio("Query 2 Type", ('Image', 'Text'))
+        second_query_weight = st.number_input("Query 2 Weight", min_value=-1.0, max_value=1.0, value=0.5)
+        if second_query_type == "Image":
+            second_query = st.file_uploader("Upload a Photo to Search", type=["jpg", "png"], key="second_query")
+        else:
+            second_query = st.text_input("Enter Text Search")
 
         matching_images_number_to_present = st.number_input(label="Top Images to Present", value=20, min_value=1,
                                                             max_value=100, step=1)
@@ -44,12 +54,28 @@ def search_main():
 
     if submit:
         st.empty()
-        st.title("Met Search Results:")
-        image_query = Image.open(image_query).convert('RGB')
+        st.title("Query:")
+        search_queries_columns = st.columns(5)
+        search_queries_columns[0].title(f"{first_query_weight}")
 
-        perform_combined_search(text_query, image_query, image_weight, matching_images_number_to_present)
-    else:
-        st.write("")
+        if first_query_type == "Image":
+            first_query = Image.open(first_query).convert('RGB')
+            search_queries_columns[1].image(first_query, width=200)
+        else:
+            search_queries_columns[1].title(first_query)
+        search_queries_columns[2].title("+")
+        search_queries_columns[3].title(f"{second_query_weight}")
+
+        if second_query_type == "Image":
+            second_query = Image.open(second_query).convert('RGB')
+            search_queries_columns[4].image(second_query, width=200)
+        else:
+            search_queries_columns[4].write(second_query)
+
+        st.title("Met Search Results:")
+
+        perform_combined_search(first_query, first_query_type, first_query_weight, second_query, second_query_type,
+                                second_query_weight,matching_images_number_to_present)
 
 
 if __name__ == "__main__":

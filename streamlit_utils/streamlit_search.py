@@ -48,9 +48,12 @@ def find_similar(image_to_search):
     perform_normal_search(image_to_search, "Image", is_closest_item_search=True)
 
 
-def perform_combined_search(text_query, image_query, image_weight=0.5, matching_images_number_to_present=20,
-                            is_closest_item_search=False):
-    best_photos = searcher.search_by_text_and_photo(text_query, image_query, image_weight)
+def perform_combined_search(first_query, first_query_type, first_query_weight, second_query, second_query_type,
+                            second_query_weight, matching_images_number_to_present, is_closest_item_search=False):
+    best_photos = searcher.search_combined(first_query, first_query_type, first_query_weight,
+                                           second_query,
+                                           second_query_type,
+                                           second_query_weight)
     # Iterate over the top 3 results
     search_range = range(matching_images_number_to_present)
     for i in search_range:
