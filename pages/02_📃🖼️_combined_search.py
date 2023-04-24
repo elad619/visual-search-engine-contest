@@ -36,16 +36,16 @@ def search_main():
         first_query_type = st.radio("Query 1 Type", ('Image', 'Text'))
         first_query_weight = st.number_input("Query 1 Weight", min_value=-1.0, max_value=1.0, value=0.5)
         if first_query_type == "Image":
-            first_query = st.file_uploader("Upload a Photo to Search", type=["jpg", "png"], key="first_query")
+            first_query = st.file_uploader("Upload a Photo to Search", type=["jpg", "png"], key="first_image_query")
         else:
-            first_query = st.text_input("Enter Text Search")
+            first_query = st.text_input("Enter Text Search", key="first_text_query")
 
         second_query_type = st.radio("Query 2 Type", ('Image', 'Text'))
         second_query_weight = st.number_input("Query 2 Weight", min_value=-1.0, max_value=1.0, value=0.5)
         if second_query_type == "Image":
-            second_query = st.file_uploader("Upload a Photo to Search", type=["jpg", "png"], key="second_query")
+            second_query = st.file_uploader("Upload a Photo to Search", type=["jpg", "png"], key="second_image_query")
         else:
-            second_query = st.text_input("Enter Text Search")
+            second_query = st.text_input("Enter Text Search", key="second_text_query")
 
         matching_images_number_to_present = st.number_input(label="Top Images to Present", value=20, min_value=1,
                                                             max_value=100, step=1)
